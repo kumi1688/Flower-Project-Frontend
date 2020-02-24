@@ -1,62 +1,60 @@
 <template>
-  <div id="app">
-    <header-container></header-container>
-    <menu-container></menu-container>
-<!--    <h1>{{count}}</h1>-->
-<!--    <div style="display: inline-flex">-->
-<!--      <h2><button @click="increase">+</button></h2>-->
-<!--      <h2><button @click="decrease">-</button></h2>-->
-<!--    </div>-->
-  </div>
+  <v-app id="inspire">
+    <v-navigation-drawer
+            v-model="drawer"
+            app
+            clipped
+    >
+    <sidebar></sidebar>
+    </v-navigation-drawer>
+
+    <v-app-bar
+            app
+            clipped-left
+    >
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-toolbar-title>원예 도우미</v-toolbar-title>
+    </v-app-bar>
+
+    <v-content>
+      <v-container
+              class="fill-height"
+              fluid
+      >
+        <v-row
+                align="center"
+                justify="center"
+        >
+      <sensor></sensor>
+
+        </v-row>
+      </v-container>
+    </v-content>
+
+    <v-footer app>
+      <span>&copy; 2019</span>
+    </v-footer>
+  </v-app>
 </template>
 
 <script>
-import header from "./components/header";
-import menu from './components/menu';
-import Vue from 'vue'
-import Vuex from 'vuex'
+  import SideBar from "./components/SideBar";
+  import SensorContainer from "./components/container/SensorContainer";
 
-Vue.use(Vuex);
-
-const store = new Vuex.Store({
-  state: {
-    count: 0
-  },
-  mutations: {
-    increment (state) {state.count++},
-    decrement (state) {state.count--},
-  }
-});
-
-export default {
-  name: 'App',
-  components: {
-    'header-container' : header,
-    'menu-container' : menu,
-  },
-  computed:{
-    count() {
-      return store.state.count
-    }
-  },
-  methods:{
-    increase() {
-      return store.commit('increment');
+  export default {
+    props: {
+      source: String,
     },
-    decrease(){
-      return store.commit('decrement');
-    }
-  }
-}
-</script>
+    components:{
+      'sidebar': SideBar,
+      'sensor':  SensorContainer,
+    },
+    data: () => ({
+      drawer: null,
+    }),
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+    created () {
+      this.$vuetify.theme.white = true
+    },
+  }
+</script>
