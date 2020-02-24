@@ -34,8 +34,10 @@
         <ul>
             <v-container>
                 <v-row>
-                    <v-col  v-for="data in dataList" :key="data._id">
-                            <ras-p-berry-card v-bind:pdata="data"></ras-p-berry-card>
+                    <v-col v-for="rowData in dataList" :key="rowData.key">
+    <!--                    <v-col  v-for="colData in rowData" :key="colData.key">-->
+                                <ras-p-berry-card v-bind:pdata="rowData"></ras-p-berry-card>
+    <!--                    </v-col>-->
                     </v-col>
                 </v-row>
             </v-container>
@@ -49,7 +51,7 @@ import RasPberryCard from "./RasPberryCard";
 
  export default {
         name: "SensorContainer",
-        props: ['dataList'],
+        props: ['dataList', 'totalDeviceList'],
         components:{
           'ras-p-berry-card' : RasPberryCard
         },
