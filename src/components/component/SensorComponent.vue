@@ -51,7 +51,7 @@ import RasPberryCard from "./RasPberryCard";
 
  export default {
         name: "SensorContainer",
-        props: ['dataList', 'totalDeviceList'],
+        props: ['dataList', 'totalDeviceNumber'],
         components:{
           'ras-p-berry-card' : RasPberryCard
         },

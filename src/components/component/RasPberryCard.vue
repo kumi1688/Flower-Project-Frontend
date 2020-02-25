@@ -1,6 +1,7 @@
 <template>
-    <v-container>
+    <v-container >
     <v-card
+
             class="mx-auto"
             max-width="344"
             outlined
@@ -64,7 +65,7 @@
             return{
                 showModal: false,
                 camera: false,
-                mqtt: true,
+                mqtt: false,
             }
         },
         props: ['pdata'],

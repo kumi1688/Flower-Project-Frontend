@@ -1,9 +1,6 @@
 <template>
     <v-container>
-        <sensor-component v-bind:dataList="dataList" v-bind:totalDeviceList="totalDeviceNumber"></sensor-component>
-        <h3 v-for="data in websocketData" :key="data.key">
-            {{data}}
-        </h3>
+        <sensor-component v-bind:dataList="dataList" v-bind:totalDeviceNumber="totalDeviceNumber"></sensor-component>
         <h3>{{this.test}}</h3>
         <h2>{{this.count}}</h2>
         <button @click="increment">증가</button>
@@ -23,7 +20,7 @@ var socket = io('http://localhost:3000');
         },
         data(){
             return{
-                websocketData: ['123', '234'],
+                websocketData: [],
                 dataList: [],
                 totalDeviceNumber: 0,
                 count: 0,
@@ -62,8 +59,11 @@ var socket = io('http://localhost:3000');
                 // this.websocketData = this.websocketData.concat('345');
             },
             getRealTimeData(){
-                socket.on("hi", fetchedData => {
+                socket.on("realTimeData", fetchedData => {
                     this.test = fetchedData.message;
+                    this.dataList = fetchedData.data.deviceDataList;
+                    this.totalDeviceNumber= fetchedData.data.totalDeviceNumber;
+                    console.log(this.dataList);
                 })
             }
         }
