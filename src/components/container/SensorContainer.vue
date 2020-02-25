@@ -1,6 +1,12 @@
 <template>
     <v-container>
         <sensor-component v-bind:dataList="dataList" v-bind:totalDeviceList="totalDeviceNumber"></sensor-component>
+        <h3 v-for="data in websocketData" :key="data.key">
+            {{data}}
+        </h3>
+        <h3>{{this.test}}</h3>
+        <h2>{{this.count}}</h2>
+        <button @click="increment">증가</button>
     </v-container>
 </template>
 
@@ -8,31 +14,57 @@
 import axios from 'axios';
 import SensorComponent from "../component/SensorComponent";
 import io from 'socket.io-client';
+var socket = io('http://localhost:3000');
 
     export default {
         name: "Sensor",
         components:{
             'sensor-component' : SensorComponent
         },
+        data(){
+            return{
+                websocketData: ['123', '234'],
+                dataList: [],
+                totalDeviceNumber: 0,
+                count: 0,
+                test: 'test'
+            }
+        },
         created() {
             axios.get('/api/sensor').then((result) => {
                 this.dataList = result.data.deviceDataList;
                 this.totalDeviceNumber = result.data.totalDeviceNumber;
             });
-            this.connect();
+            this.getRealTimeData();
         },
-        data(){
-            return{
-                dataList: [],
-                totalDeviceNumber: 0,
-            }
+        updated() {
+            console.log('updated');
+        },
+        mounted() {
+            // this.getData();
+        },
+        computed:{
+          webSocketData2(){
+              return this.websocketData
+          }
         },
         methods:{
             connect(){
-                var socket = io('http://localhost:3000');
-                socket.on('connect', function(){});
-                socket.on('hi', function(data){console.log(data)});
-                socket.on('disconnect', function(){});
+                socket.on('connect', function(){
+                    console.log('웹 소켓 연결됨');
+                });
+
+
+                // socket.on('disconnect', function(){});
+            },
+            increment(){
+                this.count = this.count + 1;
+                // this.websocketData = this.websocketData.concat('345');
+            },
+            getRealTimeData(){
+                socket.on("hi", fetchedData => {
+                    this.test = fetchedData.message;
+                })
             }
         }
         }

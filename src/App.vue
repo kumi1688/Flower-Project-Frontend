@@ -41,6 +41,7 @@
   import SideBar from "./components/SideBar";
   import SensorContainer from "./components/container/SensorContainer";
 
+
   export default {
     props: {
       source: String,
